@@ -113,12 +113,89 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        if(side == Side.WEST){
+            board.setViewingPerspective(Side.WEST);
+        }else if(side == Side.EAST){
+            board.setViewingPerspective(Side.EAST);
+        }else if(side == Side.SOUTH){
+            board.setViewingPerspective(Side.SOUTH);
+        }
+        changed = moveToNorth(board);
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+    //when the board is tilted to the north, move every pieces to the right place
+    //if nothing happened,return false
+    //otherwise, return true
+    public boolean moveToNorth(Board board){
+        //an array that stored booleans which indicates if it is merged
+        boolean[][] mergedBoard = new boolean[board.size()][board.size()];
+        boolean flag = false;
+        for(int row = board.size() - 2; row >= 0; row--){
+            //scan the row from the row 1 row below the top to the bottom one
+            for(int col = 0; col < board.size();col++){
+                Tile curTile = board.tile(col,row);
+                Tile[] myColArr = colArr(col,board);
+                if(curTile != null && shouldMoveUp(col,row,board,mergedBoard)){
+                    flag = true;
+                    int[] mySwitch = findSwitch(curTile,col,row,myColArr,mergedBoard);
+                    boolean ifmerged = board.move(mySwitch[0], mySwitch[1],curTile);
+                    score += ifmerged? curTile.value() * 2 : 0;
+                    mergedBoard[mySwitch[0]][mySwitch[1]] = ifmerged;
+                }
+            }
+        }
+        return flag;
+    }
+    //return an array of Tiles on the specific column for this current tile
+    //index indicates which row it's at
+    public Tile[] colArr(int col,Board board){
+        Tile[] colTile = new Tile[board.size()];
+        for(int row = 0; row < board.size(); row++){
+            colTile[row] = board.tile(col,row);
+        }
+        return colTile;
+    }
+
+    //check if current tile should move up
+    //if square above is empty, return true
+    //otherwise,check if we can merge
+    public boolean shouldMoveUp(int col,int row,Board board,boolean[][] mergedBoard){
+        int colAbove = col;
+        int rowAbove = row + 1;
+        Tile tileAbove = board.tile(colAbove,rowAbove);
+        if(tileAbove == null){//tile above is empty
+            return true;
+        }else{
+            //if tile above isn't merged and it has the same value as current tile,return true
+            return !mergedBoard[colAbove][rowAbove] && tileValueCompare(tileAbove,board.tile(col,row));
+        }
+    }
+    //find the exact col and row where current tile should place
+    //this method is made for MOVING UP only
+    //col and row is needed because curTile's row() and col() will only works for a situation where the board is tilted to the north
+    public int[] findSwitch(Tile curTile,int col,int row,Tile[] myColArr,boolean[][] mergedBoard){
+        //iterate through the tiles above current tile to find the best candidate
+        int candidateRow = -1;
+        for(int myRow = row + 1; myRow < myColArr.length; myRow++){
+            if(myColArr[myRow] == null){
+                candidateRow = myRow;
+            }else{
+                if(!mergedBoard[col][myRow] && tileValueCompare(curTile,myColArr[myRow])){
+                    candidateRow = myRow;
+                }
+                break;
+            }
+        }
+        return new int[]{col,candidateRow};
+    }
+
+    public boolean tileValueCompare(Tile t1,Tile t2){
+        return t1.value() == t2.value();
     }
 
     /** Checks if the game is over and sets the gameOver variable
@@ -138,6 +215,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for(int i = 0;i < b.size();i++){
+            for(int j = 0;j < b.size();j++){
+                if(b.tile(j,i) == null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +232,14 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for(int i = 0;i < b.size();i++){
+            for(int j = 0;j < b.size();j++){
+                Tile tileOnTheBoard = b.tile(j,i);
+                if(tileOnTheBoard != null && tileOnTheBoard.value() ==MAX_PIECE){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -159,9 +251,47 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if(emptySpaceExists(b)){
+            return true;
+        }
+        if(sameAdjacentTiles(b)){
+            return true;
+        }
+        return false;
+    }
+    /**
+     * return true if there are at least 2 adjacent tiles of the same number
+     * otherwise,return false
+     */
+    public static boolean sameAdjacentTiles(Board b){
+        for(int i = 0;i < b.size();i++){
+            for(int j = 0;j < b.size();j++){
+                if(ifSameAsRightOrBottom(b,i,j)){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
+    public static boolean ifSameAsRightOrBottom(Board b,int row,int col){
+        Tile curTile = b.tile(col,row);//current tile to be compared with
+        Tile[] compare = new Tile[2];
+        if((col + 1) < b.size()){
+            //store the tile on the right
+            compare[0] = b.tile(col + 1,row);
+        }
+        if((row + 1) < b.size()){
+            //store the tile below
+            compare[1] = b.tile(col,row + 1);
+        }
+        for(Tile element : compare){
+            if(element != null && curTile.value() == element.value()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
      /** Returns the model as a string, used for debugging. */
