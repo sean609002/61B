@@ -1,5 +1,6 @@
-package deque;
+package test;
 
+import deque.ArrayDeque;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
