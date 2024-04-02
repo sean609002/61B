@@ -137,4 +137,18 @@ public class ArrayDequeTest {
             assertEquals(i + 5,(int) lld1.get(i));
         }
     }
+    @Test
+    public void addRemoveTest2(){
+        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
+        for (int i = 0;i < 10;i++) {
+            lld1.addFirst(i);
+        }
+        for (int i = 0;i < 15;i++) {
+            lld1.removeLast();
+        }
+        assertEquals(0,lld1.size());
+        for (int i = 0;i < 10;i++) {
+            lld1.addLast(i);
+        }
+    }
 }

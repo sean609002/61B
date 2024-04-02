@@ -39,7 +39,7 @@ public class ArrayDeque<T> implements Deque<T>{
         if(usage > 0.9){
             newItemArr =(T[]) new Object[length * 2];
             reSizeHelper(newItemArr);
-        }else if(usage < 0.25){
+        }else if(usage < 0.25 && size() > 8){
             newItemArr =(T[]) new Object[length / 4];
             reSizeHelper(newItemArr);
         }
