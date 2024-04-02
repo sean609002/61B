@@ -4,6 +4,9 @@ import java.util.Comparator;
 
 public class MaxArrayDeque<T> extends ArrayDeque<T>{
     Comparator<T> myCompare;
+    public MaxArrayDeque(){
+        super();
+    }
     public MaxArrayDeque(Comparator<T> c){
         myCompare = c;
     }
