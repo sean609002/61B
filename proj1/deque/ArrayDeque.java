@@ -1,5 +1,7 @@
 package deque;
 
+import java.util.Iterator;
+
 public class ArrayDeque<T> implements Deque<T>{
     private T[] items;
     private int size = 0;
@@ -87,6 +89,15 @@ public class ArrayDeque<T> implements Deque<T>{
         }
         return items[targetIndex];
     }
+
+    public Iterator<T> iterator() {
+        return null;
+    }
+
+    public boolean equals(Object o){
+        return false;
+    }
+
     @Override
     public int size(){
         return size;

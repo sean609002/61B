@@ -1,5 +1,7 @@
 package deque;
 
+import java.util.Iterator;
+
 public class LinkedListDeque<T> implements Deque<T>{
     private List sentinel;
     private int size = 0;
@@ -84,6 +86,7 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
         return null;
     }
+
     public T getRecursive(int index){
         return getRecursive(index,sentinel.next);
     }
@@ -107,4 +110,7 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
     }
 
+    public Iterator<T> iterator() {
+        return null;
+    }
 }
