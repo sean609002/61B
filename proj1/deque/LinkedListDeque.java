@@ -6,10 +6,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private List sentinel;
     private int size = 0;
     private class List {
-        public List prev;
-        public T first;
-        public List next;
-        public List(T first, List prev, List next) {
+        private List prev;
+        private T first;
+        private List next;
+        List(T first, List prev, List next) {
             this.first = first;
             this.prev = prev;
             this.next = next;
