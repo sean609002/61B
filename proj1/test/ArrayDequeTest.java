@@ -125,7 +125,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void addRemoveGetTest(){
+    public void addRemoveGetTest() {
         ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
         for (int i = 0; i < 10; i++) {
             lld1.addLast(i);
@@ -133,21 +133,21 @@ public class ArrayDequeTest {
         for (int i = 0; i < 5; i++) {
             assertEquals(i, (int) lld1.removeFirst());
         }
-        for(int i = 0;i < lld1.size();i++){
-            assertEquals(i + 5,(int) lld1.get(i));
+        for (int i = 0; i < lld1.size(); i++) {
+            assertEquals(i + 5, (int) lld1.get(i));
         }
     }
     @Test
-    public void addRemoveTest2(){
+    public void addRemoveTest2() {
         ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
-        for (int i = 0;i < 10;i++) {
+        for (int i = 0; i < 10; i++) {
             lld1.addFirst(i);
         }
-        for (int i = 0;i < 15;i++) {
+        for (int i = 0; i < 15; i++) {
             lld1.removeLast();
         }
-        assertEquals(0,lld1.size());
-        for (int i = 0;i < 10;i++) {
+        assertEquals(0, lld1.size());
+        for (int i = 0; i < 10; i++) {
             lld1.addLast(i);
         }
     }

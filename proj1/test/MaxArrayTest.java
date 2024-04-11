@@ -9,26 +9,26 @@ import static org.junit.Assert.assertEquals;
 
 public class MaxArrayTest {
     @Test
-    public void MaxTest(){
+    public void maxTest() {
         MaxArrayDeque<Integer> test = new MaxArrayDeque<>(new MyCompare());
-        for (int i = 0;i < 100;i++) {
-            if(i % 2 == 0){
+        for (int i = 0; i < 100; i++) {
+            if (i % 2 == 0) {
                 test.addFirst(i);
-            }else{
+            } else {
                 test.addLast(i);
             }
         }
-        assertEquals(test.max(),(Integer) 99);
+        assertEquals(test.max(), (Integer) 99);
     }
 }
-class MyCompare implements Comparator<Integer>{
+class MyCompare implements Comparator<Integer> {
 
     public int compare(Integer o1, Integer o2) {
-        if(o1 < o2){
+        if (o1 < o2) {
             return -1;
-        }else if(o1 == o2){
+        } else if (o1 == o2) {
             return 0;
-        }else{
+        } else {
             return 1;
         }
     }

@@ -137,7 +137,7 @@ public class LinkedListDequeTest {
 
     }
     @Test
-    public void addRemoveGetTest(){
+    public void addRemoveGetTest() {
         LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
         for (int i = 0; i < 10; i++) {
             lld1.addLast(i);
@@ -145,12 +145,12 @@ public class LinkedListDequeTest {
         for (int i = 0; i < 5; i++) {
             assertEquals(i, (int) lld1.removeFirst());
         }
-        for(int i = 0;i < lld1.size();i++){
-            assertEquals(i + 5,(int) lld1.get(i));
+        for (int i = 0; i < lld1.size(); i++) {
+            assertEquals(i + 5, (int) lld1.get(i));
         }
     }
     @Test
-    public void addRemoveGetRecursiveTest(){
+    public void addRemoveGetRecursiveTest() {
         LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
         for (int i = 0; i < 10; i++) {
             lld1.addLast(i);
@@ -158,8 +158,8 @@ public class LinkedListDequeTest {
         for (int i = 0; i < 5; i++) {
             assertEquals(i, (int) lld1.removeFirst());
         }
-        for(int i = 0;i < lld1.size();i++){
-            assertEquals(i + 5,(int) lld1.getRecursive(i));
+        for (int i = 0; i < lld1.size(); i++) {
+            assertEquals(i + 5, (int) lld1.getRecursive(i));
         }
     }
 }
