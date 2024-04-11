@@ -3,8 +3,6 @@ package test;
 import deque.MaxArrayDeque;
 import org.junit.Test;
 
-import java.util.Comparator;
-
 import static org.junit.Assert.assertEquals;
 
 public class MaxArrayTest {
@@ -21,15 +19,4 @@ public class MaxArrayTest {
         assertEquals(test.max(), (Integer) 99);
     }
 }
-class MyCompare implements Comparator<Integer> {
 
-    public int compare(Integer o1, Integer o2) {
-        if (o1 < o2) {
-            return -1;
-        } else if (o1 == o2) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-}
