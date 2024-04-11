@@ -162,4 +162,16 @@ public class LinkedListDequeTest {
             assertEquals(i + 5, (int) lld1.getRecursive(i));
         }
     }
+
+    @Test
+    public void randomTest() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        for (int i = 0; i < 10; i++) {
+            lld1.addFirst(i);
+        }
+        for (int i = 0; i < 11; i++) {
+            int removed = lld1.removeLast();
+            assertTrue(removed == i);
+        }
+    }
 }
