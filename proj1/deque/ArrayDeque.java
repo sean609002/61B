@@ -33,10 +33,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         size++;
         updateUsage();
     }
-    public void updateUsage() {
+    private void updateUsage() {
         usage = size / (double) items.length;
     }
-    public void reSize(int length, double usage) {
+    private void reSize(int length, double usage) {
         T[] newItemArr;
         if (usage > 0.9) {
             newItemArr = (T[]) new Object[length * 2];
@@ -46,7 +46,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             reSizeHelper(newItemArr);
         }
     }
-    public void reSizeHelper(T[] newItemArr) {
+    private void reSizeHelper(T[] newItemArr) {
         for (int i = 1; i < size() + 1; i++) {
             newItemArr[i] = get(i - 1);
         }
@@ -94,7 +94,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         return new ArrayDequeIterator();
     }
 
-    public class ArrayDequeIterator implements Iterator<T> {
+    private class ArrayDequeIterator implements Iterator<T> {
         private int index = 0;
         public boolean hasNext() {
             return index < size();
@@ -126,14 +126,14 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
         System.out.println();
     }
-    public int updateNextFirstReverseNextLast(int next) {
+    private int updateNextFirstReverseNextLast(int next) {
         next--;
         if (next < 0) {
             next = items.length - 1;
         }
         return next;
     }
-    public int updateNextLastReverseNextFirst(int next) {
+    private int updateNextLastReverseNextFirst(int next) {
         next++;
         if (next == items.length) {
             next = 0;
