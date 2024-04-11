@@ -93,10 +93,6 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
     @Override
     public Iterator<T> iterator() {
         return new LinkedListDequeIterator();
@@ -112,5 +108,24 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             index++;
             return nextElement;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o instanceof LinkedListDeque target) {
+            if (target.size() != this.size()) {
+                return false;
+            }
+            for (int i = 0; i < this.size(); i++) {
+                if (!target.get(i).equals(this.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -14,21 +14,5 @@ public interface Deque<T> {
     public T removeLast();
     public T get(int index);
     public Iterator<T> iterator();
-    public default boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (o instanceof Deque target) {
-            if (target.size() != this.size()) {
-                return false;
-            }
-            for (int i = 0; i < this.size(); i++) {
-                if (!target.get(i).equals(this.get(i))) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
+    public boolean equals(Object o);
 }
