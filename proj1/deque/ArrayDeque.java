@@ -102,6 +102,7 @@ public class ArrayDeque<T> implements Deque<T> {
     public int size() {
         return size;
     }
+
     @Override
     public void printDeque() {
         int first = updateNextLastReverseNextFirst(nextFirst);
