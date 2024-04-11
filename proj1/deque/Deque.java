@@ -23,7 +23,7 @@ public interface Deque<T> {
                 return false;
             }
             for (int i = 0; i < this.size(); i++) {
-                if (target.get(i) != this.get(i)) {
+                if (!target.get(i).equals(this.get(i))) {
                     return false;
                 }
             }
