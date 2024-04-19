@@ -93,11 +93,59 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     }
 
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        BSTNode keyNode = getNode(key);
+        return remove(key, keyNode.value);
     }
 
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        V actualVal = get(key);
+        if (actualVal != null && actualVal.equals(value)){
+            //in case we find the key immediately, we have to assign the return value to the root
+            root = remove(root, key ,value);
+            return actualVal;
+        }
+        return null;
+    }
+
+    public BSTNode remove(BSTNode node, K key, V value) {
+        if (node == null) {
+            return null;
+        }
+        int keyComp = node.key.compareTo(key);
+        boolean valueComp = node.value.equals(value);
+        if (keyComp == 0 && valueComp) {
+            BSTNode left = node.left;
+            BSTNode right = node.right;
+            if (left == null && right == null) {
+                return null;
+            } else if (left != null && right != null) {
+                BSTNode smallest = findSmallest(node.right);
+                K smallestKey = smallest.key;
+                V smallestValue = smallest.value;
+                remove(smallest.key, smallest.value);
+                node.key = smallestKey;
+                node.value = smallestValue;
+            } else if (left != null) {
+                return left;
+            } else {
+                return right;
+            }
+        } else if (keyComp < 0) {
+            node.right = remove(node.right, key, value);
+        } else {
+            node.left = remove(node.left, key, value);
+        }
+        //no matter the node is found immediately or something, they have to return node;
+        // before that, we can do size - 1
+        node.size = 1 + size(node.left) + size(node.right);
+        return node;
+    }
+
+    public BSTNode findSmallest(BSTNode node) {
+        if (node.left != null) {
+            return findSmallest(node.left);
+        }
+        return node;
     }
 
     public Iterator<K> iterator() {
