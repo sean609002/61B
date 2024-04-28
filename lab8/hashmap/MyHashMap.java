@@ -1,9 +1,6 @@
 package hashmap;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  *  A hash table-backed Map implementation. Provides amortized constant time
@@ -32,6 +29,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private Collection<Node>[] buckets;
     // You should probably define some more!
     private double maxLoad;
+    private HashSet<K> set;
     private int bucketSize;
     private int size = 0;
 
@@ -40,12 +38,14 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         bucketSize = 16;
         maxLoad = 0.75;
         buckets = createTable(bucketSize);
+        set = new HashSet<>();
     }
 
     public MyHashMap(int initialSize) {
         this.bucketSize = initialSize;
         maxLoad = 0.75;
         buckets = createTable(this.bucketSize);
+        set = new HashSet<>();
     }
 
     /**
@@ -59,6 +59,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.bucketSize = initialSize;
         this.maxLoad = maxLoad;
         buckets = createTable(this.bucketSize);
+        set = new HashSet<>();
     }
 
     /**
@@ -110,7 +111,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     // TODO: Implement the methods of the Map61B Interface below
     // Your code won't compile until you do so!
     public void clear() {
+        set = new HashSet<>();
+        bucketSize = 16;
+        size = 0;
         buckets = createTable(bucketSize);
+
     }
 
     public boolean containsKey(K key) {
@@ -140,11 +145,20 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public void put(K key, V value) {
+        set.add(key);
         resize();
-        Node myNode = createNode(key,value);
         int bucketNumber = bucketNumber(key, bucketSize);
-        buckets[bucketNumber].add(myNode);
-        size++;
+        if (!containsKey(key)) {
+            Node myNode = createNode(key,value);
+            buckets[bucketNumber].add(myNode);
+            size++;
+        } else {
+            for (Node n : buckets[bucketNumber]) {
+                if (n.key.equals(key)) {
+                    n.value = value;
+                }
+            }
+        }
     }
 
     public void resize() {
@@ -166,7 +180,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public Set<K> keySet() {
-        return null;
+        return set;
     }
 
     public V remove(K key) {
@@ -179,5 +193,17 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     public Iterator<K> iterator() {
         return null;
+    }
+
+    public class myHashMapIterator implements Iterator<K> {
+        private int counter = 0;
+        private Iterator<K> iter = set.iterator();
+        public boolean hasNext() {
+            return iter.hasNext();
+        }
+
+        public K next() {
+            return iter.next();
+        }
     }
 }
