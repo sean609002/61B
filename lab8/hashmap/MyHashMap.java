@@ -117,8 +117,17 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return get(key) != null;
     }
 
+    public int bucketNumber(K key, int bucketSize) {
+        int hashCode = key.hashCode();
+        if (hashCode < 0) {
+            hashCode = -hashCode;
+        }
+        return hashCode % bucketSize;
+    }
+
     public V get(K key) {
-        for (Node n : buckets[key.hashCode() % bucketSize]) {
+        int bucketNumber = bucketNumber(key, bucketSize);
+        for (Node n : buckets[bucketNumber]) {
             if (n.key.equals(key)) {
                 return n.value;
             }
@@ -133,7 +142,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public void put(K key, V value) {
         resize();
         Node myNode = createNode(key,value);
-        buckets[myNode.key.hashCode() % bucketSize].add(myNode);
+        int bucketNumber = bucketNumber(key, bucketSize);
+        buckets[bucketNumber].add(myNode);
         size++;
     }
 
@@ -148,8 +158,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         Collection<Node>[] newBuckets = createTable(newBucketSize);
         for (int i = 0;i < bucketSize; i++) {
             for (Node n : buckets[i]) {
-                int newHashCode = n.key.hashCode() % newBucketSize;
-                newBuckets[newHashCode].add(n);
+                int bucketNumber = bucketNumber(n.key, bucketSize);
+                newBuckets[bucketNumber].add(n);
             }
         }
         return newBuckets;
