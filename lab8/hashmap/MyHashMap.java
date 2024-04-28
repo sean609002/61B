@@ -66,7 +66,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * Returns a new node to be placed in a hash table bucket
      */
     private Node createNode(K key, V value) {
-        return new Node(key,value);
+        return new Node(key, value);
     }
 
     /**
@@ -102,14 +102,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     private Collection<Node>[] createTable(int tableSize) {
         Collection<Node>[] table = new Collection[tableSize];
-        for (int i = 0;i < tableSize; i++) {
+        for (int i = 0; i < tableSize; i++) {
             table[i] = createBucket();
         }
         return table;
     }
 
-    // TODO: Implement the methods of the Map61B Interface below
-    // Your code won't compile until you do so!
     public void clear() {
         set = new HashSet<>();
         bucketSize = 16;
@@ -122,7 +120,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return get(key) != null;
     }
 
-    public int bucketNumber(K key, int bucketSize) {
+    private int bucketNumber(K key, int bucketSize) {
         int hashCode = key.hashCode();
         if (hashCode < 0) {
             hashCode = -hashCode;
@@ -149,7 +147,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         resize();
         int bucketNumber = bucketNumber(key, bucketSize);
         if (!containsKey(key)) {
-            Node myNode = createNode(key,value);
+            Node myNode = createNode(key, value);
             buckets[bucketNumber].add(myNode);
             size++;
         } else {
@@ -161,16 +159,16 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         }
     }
 
-    public void resize() {
-        if (size/(bucketSize + 0.0) >= maxLoad) {
-            buckets = resize(buckets,bucketSize);
+    private void resize() {
+        if (size / (bucketSize + 0.0) >= maxLoad) {
+            buckets = resize(buckets, bucketSize);
         }
     }
 
-    public Collection<Node>[] resize(Collection<Node>[] buckets, int bucketSize) {
+    private Collection<Node>[] resize(Collection<Node>[] buckets, int bucketSize) {
         int newBucketSize = bucketSize * 2;
         Collection<Node>[] newBuckets = createTable(newBucketSize);
-        for (int i = 0;i < bucketSize; i++) {
+        for (int i = 0; i < bucketSize; i++) {
             for (Node n : buckets[i]) {
                 int bucketNumber = bucketNumber(n.key, bucketSize);
                 newBuckets[bucketNumber].add(n);
@@ -192,10 +190,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public Iterator<K> iterator() {
-        return null;
+        return new MyHashMapIterator();
     }
 
-    public class myHashMapIterator implements Iterator<K> {
+    private class MyHashMapIterator implements Iterator<K> {
         private int counter = 0;
         private Iterator<K> iter = set.iterator();
         public boolean hasNext() {
